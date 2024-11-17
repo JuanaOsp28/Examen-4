@@ -1,7 +1,7 @@
 <?php
     $usuario = "root";
     $passwood = "";
-    $dsn = "mysql:host=localhost;dbname=crud_usuarios";
+    $dsn = "mysql:host=localhost;dbname=crud_productos";
 
     try {
         // Establecer la conexión con PDO

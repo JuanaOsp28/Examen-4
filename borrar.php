@@ -1,25 +1,22 @@
 <?php
 
-    include("conexion.php");
-    include("funciones.php");
-    error_reporting(0);
+include("conexion.php");
+include("funciones.php");
+error_reporting(0);
 
-    if (isset(($_POST["id_usuario"]))) {
-        $imagen = obtener_nombre_imagen($_POST["id_usuario"]);
-        if ($imagen !='') {
-            unlink("img/".$_POST[$imagen]);
-        }
+if (isset($_POST["id_producto"])) {
+    $stmt = $conexion->prepare("DELETE FROM productos WHERE id = :id");
 
-        $stmt = $conexion->prepare("DELETE FROM usuarios WHERE id=:id");
+    $resultado = $stmt->execute(
+        array(
+            ':id' => $_POST["id_producto"]
+        )
+    );
 
-        $resultado = $stmt->execute(
-
-            array(
-                ':id'    => $_POST["id_usuario"]
-            )
-        );
-
-        if (!empty($resultado)) {
-            echo 'Registro eliminado';
-        }
+    if (!empty($resultado)) {
+        echo 'Registro eliminado';
+    } else {
+        echo 'Error al eliminar el registro';
     }
+}
+?>

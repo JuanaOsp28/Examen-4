@@ -1,24 +1,20 @@
 <?php
 
 include("conexion.php");
-include("funciones.php");
-error_reporting(0);
 
-if (isset($_POST["id_usuario"])) {
+if (isset($_POST["id_producto"])) {
     $salida = array();
-    $stmt = $conexion->prepare("SELECT * FROM usuarios WHERE id = '".$_POST["id_usuario"]."' LIMIT 1");
-    $stmt->execute();
+    $stmt = $conexion->prepare("SELECT * FROM productos WHERE id = :id LIMIT 1");
+    $stmt->execute(array(':id' => $_POST["id_producto"]));
     $resultado = $stmt->fetchAll();
-    foreach($resultado as $fila){
+
+    foreach ($resultado as $fila) {
         $salida["nombre"] = $fila["nombre"];
-        $salida["apellido"] = $fila["apellido"];
-        $salida["telefono"] = $fila["telefono"];
-        $salida["email"] = $fila["email"];
-        if ($fila["imagen"] != "") {
-            $salida["imagen_usuario"] = '<img src="img/' . $fila["imagen"] . '"  class="img-thumbnail" width="100" height="50" /><input type="hidden" name="imagen_usuario_oculta" value="'.$fila["imagen"].'" />';
-        }else{
-            $salida["imagen_usuario"] = '<input type="hidden" name="imagen_usuario_oculta" value="" />';
-        }
+        $salida["descripcion"] = $fila["descripcion"];
+        $salida["precio"] = $fila["precio"];
+        $salida["cantidad"] = $fila["cantidad"];
     }
-    echo json_encode($salida); 
+
+    echo json_encode($salida);
 }
+?>

@@ -1,53 +1,39 @@
 <?php
 
 include("conexion.php");
-include("funciones.php");
 
 if ($_POST["operacion"] == "Crear") {
-    $imagen = '';
-    if ($_FILES["imagen_usuario"]["name"] != '') {
-        $imagen = subir_imagen();
-    }
-    $stmt = $conexion->prepare("INSERT INTO usuarios(nombre, apellido, imagen, telefono, email)VALUES(:nombre, :apellido, :imagen, :telefono, :email)");
+    $stmt = $conexion->prepare("INSERT INTO productos(nombre, descripcion, precio, cantidad) VALUES (:nombre, :descripcion, :precio, :cantidad)");
 
     $resultado = $stmt->execute(
         array(
-            ':nombre'    => $_POST["nombre"],
-            ':apellido'    => $_POST["apellido"],
-            ':telefono'    => $_POST["telefono"],
-            ':email'    => $_POST["email"],
-            ':imagen'    => $imagen
+            ':nombre'       => $_POST["nombre"],
+            ':descripcion'  => $_POST["descripcion"],
+            ':precio'       => $_POST["precio"],
+            ':cantidad'     => $_POST["cantidad"]
         )
     );
 
     if (!empty($resultado)) {
-        echo 'Registro creado';
+        echo 'Producto creado exitosamente';
     }
 }
 
 if ($_POST["operacion"] == "Editar") {
-    $imagen = '';
-    if ($_FILES["imagen_usuario"]["name"] != '') {
-        $imagen = subir_imagen();
-    }else{
-        $imagen = $_POST["imagen_usuario_oculta"];
-    }
-
-
-    $stmt = $conexion->prepare("UPDATE usuarios SET nombre=:nombre, apellido=:apellido, imagen=:imagen, telefono=:telefono, email=:email WHERE id = :id");
+    $stmt = $conexion->prepare("UPDATE productos SET nombre=:nombre, descripcion=:descripcion, precio=:precio, cantidad=:cantidad WHERE id=:id");
 
     $resultado = $stmt->execute(
         array(
-            ':nombre'    => $_POST["nombre"],
-            ':apellido'    => $_POST["apellido"],
-            ':telefono'    => $_POST["telefono"],
-            ':email'    => $_POST["email"],
-            ':imagen'    => $imagen,
-            ':id'    => $_POST["id_usuario"]
+            ':nombre'       => $_POST["nombre"],
+            ':descripcion'  => $_POST["descripcion"],
+            ':precio'       => $_POST["precio"],
+            ':cantidad'     => $_POST["cantidad"],
+            ':id'           => $_POST["id_producto"]
         )
     );
 
     if (!empty($resultado)) {
-        echo 'Registro actualizado';
+        echo 'Producto actualizado exitosamente';
     }
 }
+?>
